@@ -1,0 +1,45 @@
+﻿@model PagedList.StaticPagedList<StrongKeys.WebRunner.Models.DTOs.GenerationMinDTO>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Population";
+}
+
+<h2>Population</h2>
+<div class="container">
+    @foreach (var generation in Model)
+    {
+        <div class="card">
+            <div class="card-header pointer" id="heading+@generation.Id" data-toggle="collapse" data-target="#collapse+@generation.Id" aria-expanded="true" aria-controls="collapse+@generation.Id">
+                <div class="mb-0 row">
+                    <div class="col-sm">@generation.GenerationNumber</div>
+                    @{
+                        var bestChromosome = generation.Chromosomes.Aggregate((c1, c2) => c1.FitnessValues.MainCoef > c2.FitnessValues.MainCoef ? c1 : c2);
+                        <div class="col-sm">@bestChromosome.FitnessValues.MainCoef</div>
+                        <div class="col-sm">@bestChromosome.FitnessValues.R</div>
+                        <div class="col-sm">@bestChromosome.FitnessValues.G</div>
+                        <div class="col-sm">@bestChromosome.FitnessValues.B</div>
+                        <div class="col-sm">@bestChromosome.FitnessValues.Direct</div>
+                        <div class="col-sm">@bestChromosome.FitnessValues.Approximate</div>
+                    }
+                </div>
+            </div>
+
+            <div id="collapse+@generation.Id" class="collapse" aria-labelledby="heading+@generation.Id" data-parent="#accordion">
+                <div class="card-body">
+                    @foreach (var chromosome in generation.Chromosomes)
+                    {
+                        <div class="row">
+                            <div class="col-sm">@chromosome.FitnessValues.MainCoef</div>
+                            <div class="col-sm">@chromosome.FitnessValues.R</div>
+                            <div class="col-sm">@chromosome.FitnessValues.G</div>
+                            <div class="col-sm">@chromosome.FitnessValues.B</div>
+                            <div class="col-sm">@chromosome.FitnessValues.Direct</div>
+                            <div class="col-sm">@chromosome.FitnessValues.Approximate</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+                        }
+</div>
+@Html.PagedListPager(Model, page => Url.Action("PopulationAll", new { id = ViewContext.RouteData.Values["id"], page }))

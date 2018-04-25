@@ -1,0 +1,35 @@
+﻿@model List<StrongKeys.WebRunner.Models.DTOs.PopulationDTO>
+@{
+    ViewData["Title"] = "Strong keys";
+}
+
+<div class="container populations">
+    @foreach (var population in Model)
+    {
+        <div class="row"></div>
+        <div class="card">
+            <div class="card-header pointer" id="heading+@population.Id" data-toggle="collapse" data-target="#collapse+@population.Id" aria-expanded="true" aria-controls="collapse+@population.Id">
+                <div class="mb-0 row">
+
+                    <div class="col-sm">@population.Id</div>
+                    <div class="col-sm">@population.CreationDate</div>
+                    <div class="col-sm">@population.PopulationParameters.ChromosomesCount</div>
+                    <div class="col-sm">@population.PopulationParameters.BestChromosomesCount</div>
+                    <div class="col-sm">@population.PopulationParameters.RandomChromosomesCount</div>
+                    <div class="col-sm">@population.PopulationParameters.MutationProbability</div>
+                    <div class="col-sm">@Html.ActionLink("->", "PopulationAll", "Home", new { id = population.Id }, new { })</div>
+                    <div class="col-sm">@Html.ActionLink("-->", "Population", "Home", new { id = population.Id }, new { })</div>
+                </div>
+            </div>
+
+            <div id="collapse+@population.Id" class="collapse" aria-labelledby="heading+@population.Id" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm"><img src="@string.Format("data:image/png;base64,{0}",Convert.ToBase64String(population.OriginalImage))" /></div>
+                        <div class="col-sm"><img src="@string.Format("data:image/png;base64,{0}",Convert.ToBase64String(population.EncryptedImage))" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
